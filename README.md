@@ -34,15 +34,15 @@ Sync with:
 ### Example with all parameters
 
 ```
-$ docker run --name <container-name> \
-             -e MODULE_NAME=<module_name> \
-			 -e USER_ID=<user_id> \
-			 -e GROUP_ID=<group_id> \
-             -e USERNAME=<username> \
-             -e PASSWORD=<password> \
-             -v <volume>:/volume \
-             -p <port>:873 \
-             ehannes/rsyncd
+$ docker run -d --name <container-name> \
+                -e MODULE_NAME=<module_name> \
+                -e USER_ID=<user_id> \
+                -e GROUP_ID=<group_id> \
+                -e USERNAME=<username> \
+                -e PASSWORD=<password> \
+                -v <volume>:/volume \
+                -p <port>:873 \
+                ehannes/rsyncd
 ```
 
 * `<module_name>` - name of the Rsync module. This changes the last part of the rsync command to something like `rsync://<username>@<ip>:<port>/module_name `.
