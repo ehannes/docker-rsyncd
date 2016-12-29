@@ -22,6 +22,17 @@ $ docker run -d --name <container-name> \
 * `<volume>` - volume to share with your container
 * `<username>` & `<password> `- sets the login credentials for the Rsync module
 
+Try if it works with:
+
+```
+$ rsync rsync://<ip>:<:port>
+module
+```
+
+(If you are trying this on your local machine, `<ip>` is `localhost`)
+
+(`module` is the default name of the Rsync module and can be changed. See examples below)
+
 Sync with:
 
 `rsync -avP <path/to/sync> rsync://<username>@<ip>:<port>/module`
