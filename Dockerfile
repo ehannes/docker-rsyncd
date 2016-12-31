@@ -2,10 +2,10 @@ FROM debian
 MAINTAINER Hannes Elvemyr <hannes@elvemyrconsulting.se>
 
 RUN apt-get update \
-  && apt-get install -y rsync \
+  && apt-get install -y rsync openssh-server \
   && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 873
+EXPOSE 22
 VOLUME /volume
 ADD ./run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
