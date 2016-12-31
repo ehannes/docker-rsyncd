@@ -31,7 +31,7 @@ log file = /dev/stdout
 
 [${RSYNC_MODULE_NAME}]
   hosts deny = *
-  hosts allow = $ALLOW
+  hosts allow = $HOSTS_ALLOW
   read only = false
   path = /volume
   auth users = $RSYNC_USERNAME
