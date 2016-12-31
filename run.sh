@@ -1,5 +1,5 @@
 #!/bin/bash
-MODULE_NAME=${RSYNC_MODULE_NAME="module"}
+RSYNC_MODULE_NAME=${RSYNC_MODULE_NAME="module"}
 HOSTS_ALLOW=${HOSTS_ALLOW="localhost"}
 
 # check_if_parameter_missing () {
