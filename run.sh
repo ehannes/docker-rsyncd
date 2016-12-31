@@ -28,6 +28,8 @@ chmod 0400 /etc/rsyncd.secrets
 [ -f /etc/rsyncd.conf ] || cat <<EOF > /etc/rsyncd.conf
 pid file = /var/run/rsyncd.pid
 log file = /dev/stdout
+uid = $USER_ID
+gid = $GROUP_ID
 
 [${RSYNC_MODULE_NAME}]
   hosts deny = *
