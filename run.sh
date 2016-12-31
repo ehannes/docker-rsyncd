@@ -44,10 +44,8 @@ EOF
 ln -s /etc/rsyncd.conf /home/${USERNAME}/
 
 # Start SSH server
-echo 'Starting SSH daemon'
 [ -d /var/run/sshd ] || mkdir -p /var/run/sshd
-/usr/sbin/sshd -e
+/usr/sbin/sshd -e -E /dev/stdout &
 
 # Start Rsync daemon
-echo "Starting Rsync daemon"
 exec /usr/bin/rsync --no-detach --daemon --config /etc/rsyncd.conf "$@"
