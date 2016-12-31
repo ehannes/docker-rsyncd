@@ -41,6 +41,9 @@ EOF
 # Symlink to config file to give the single-user Rsync daemon access to it
 ln -s /etc/rsyncd.conf /home/${USERNAME}/
 
+# Start Rsync daemon
+exec /usr/bin/rsync --no-detach --daemon --config /etc/rsyncd.conf "$@"
+
 # Start SSH server
 [ -d /var/run/sshd ] || mkdir -p /var/run/sshd
 exec /usr/sbin/sshd -D -e

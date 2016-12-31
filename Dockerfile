@@ -5,7 +5,7 @@ RUN apt-get update \
   && apt-get install -y rsync openssh-server \
   && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 22
+EXPOSE 22 873
 VOLUME /volume
 ADD ./run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
