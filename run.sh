@@ -25,7 +25,8 @@ check_if_parameter_missing $RSYNC_USERNAME "RSYNC_USERNAME"
 check_if_parameter_missing $RSYNC_PASSWORD "RSYNC_PASSWORD"
 
 # Add user
-useradd $USERNAME --uid $USER_ID --create-home
+groupadd --gid $GROUP_ID $USERNAME
+useradd --uid $USER_ID --gid $GROUP_ID --create-home $USERNAME
 echo "${USERNAME}:${PASSWORD}" | chpasswd
 
 # Write Rsync secrets
