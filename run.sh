@@ -37,17 +37,16 @@ chmod 0440 /etc/rsyncd.secrets
 # Write Rsync config
 [ -f /etc/rsyncd.conf ] || cat <<EOF > /etc/rsyncd.conf
 pid file = /var/run/rsyncd.pid
-log file = /dev/stdout
-uid = $USER_ID
-gid = $GROUP_ID
+log file = /logs/rsync
 
 [${RSYNC_MODULE_NAME}]
   hosts deny = *
   hosts allow = $HOSTS_ALLOW
   read only = false
-  path = /volume
+  path = /data
   auth users = $RSYNC_USERNAME
   secrets file = /etc/rsyncd.secrets
+  use chroot = false
 EOF
 
 # Symlink to config file to give the single-user Rsync daemon access to it
