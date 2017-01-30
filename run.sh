@@ -54,7 +54,7 @@ ln -s /etc/rsyncd.conf /home/${USERNAME}/
 
 # Start SSH server
 [ -d /var/run/sshd ] || mkdir -p /var/run/sshd
-/usr/sbin/sshd -d &
+/usr/sbin/sshd &
 
 # Start Rsync daemon
 exec /usr/bin/rsync --no-detach --daemon --config /etc/rsyncd.conf "$@"
