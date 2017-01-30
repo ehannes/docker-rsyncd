@@ -31,7 +31,8 @@ echo "${USERNAME}:${PASSWORD}" | chpasswd
 
 # Write Rsync secrets
 echo "$RSYNC_USERNAME:$RSYNC_PASSWORD" > /etc/rsyncd.secrets
-chmod 0400 /etc/rsyncd.secrets
+chgrp $USERNAME /etc/rsyncd.secrets
+chmod 0440 /etc/rsyncd.secrets
 
 # Write Rsync config
 [ -f /etc/rsyncd.conf ] || cat <<EOF > /etc/rsyncd.conf
