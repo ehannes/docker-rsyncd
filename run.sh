@@ -1,12 +1,12 @@
 #!/bin/bash
 RSYNC_MODULE_NAME=${RSYNC_MODULE_NAME="module"}
 HOSTS_ALLOW=${HOSTS_ALLOW="localhost"}
+USER_ID=${USER_ID=1000}
+GROUP_ID=${GROUP_ID=1000}
 
 UNDEFINED="undefined"
 USERNAME=${USERNAME=$UNDEFINED}
 PASSWORD=${PASSWORD=$UNDEFINED}
-USER_ID=${USER_ID=$UNDEFINED}
-GROUP_ID=${GROUP_ID=$UNDEFINED}
 RSYNC_USERNAME=${RSYNC_USERNAME=$UNDEFINED}
 RSYNC_PASSWORD=${RSYNC_PASSWORD=$UNDEFINED}
 
@@ -19,8 +19,6 @@ check_if_parameter_missing () {
 
 check_if_parameter_missing $USERNAME "USERNAME"
 check_if_parameter_missing $PASSWORD "PASSWORD"
-check_if_parameter_missing $USER_ID "USER_ID"
-check_if_parameter_missing $GROUP_ID "GROUP_ID"
 check_if_parameter_missing $RSYNC_USERNAME "RSYNC_USERNAME"
 check_if_parameter_missing $RSYNC_PASSWORD "RSYNC_PASSWORD"
 
