@@ -107,4 +107,6 @@ $ ls /data/
 baz.txt
 
 $ rsync -e "ssh -l foo" baz.txt rsync://rsync-foo@localhost:873/module
+foo@localhost's password:
+Password:
 ```
