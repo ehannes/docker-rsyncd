@@ -1,4 +1,4 @@
-# Rsync daemon docker
+# A Docker running Rsync daemon via remote-shell connection (SSH)
 
 A simple Rsync daemon docker at your service. Inspired by https://github.com/thomfab/docker-rsyncd. Runs Rsync daemon via remote shell connection (SSH).
 
