@@ -1,37 +1,58 @@
 #!/bin/bash
-DEFAULT_USER_ID=65534 # nobody
-DEFAULT_GROUP_ID=65534 # nogroup
+RSYNC_MODULE_NAME=${RSYNC_MODULE_NAME="module"}
+HOSTS_ALLOW=${HOSTS_ALLOW="*"}
+USER_ID=${USER_ID=1000}
+GROUP_ID=${GROUP_ID=1000}
 
-MODULE_NAME=${MODULE_NAME:-"module"}
-ALLOW=${ALLOW:-*}
-USER_ID=${USER_ID:-${DEFAULT_USER_ID}}
-GROUP_ID=${GROUP_ID:-${DEFAULT_GROUP_ID}}
+UNDEFINED="undefined"
+USERNAME=${USERNAME=$UNDEFINED}
+PASSWORD=${PASSWORD=$UNDEFINED}
+RSYNC_USERNAME=${RSYNC_USERNAME=$UNDEFINED}
+RSYNC_PASSWORD=${RSYNC_PASSWORD=$UNDEFINED}
 
-if [ $USER_ID != $DEFAULT_USER_ID ]; then
-  useradd -u $USER_ID -G rsyncdgroup rsyncduser
-fi
+check_if_parameter_missing () {
+  if [ $1 == $UNDEFINED ]; then
+    echo "ERROR: Missing $2 parameter!"
+    exit 1
+  fi
+}
 
-if [ $GROUP_ID != $DEFAULT_GROUP_ID ]; then
-  groupadd -g $GROUP_ID rsyncdgroup
-fi
+check_if_parameter_missing $USERNAME "USERNAME"
+check_if_parameter_missing $PASSWORD "PASSWORD"
+check_if_parameter_missing $RSYNC_USERNAME "RSYNC_USERNAME"
+check_if_parameter_missing $RSYNC_PASSWORD "RSYNC_PASSWORD"
 
-echo "$USERNAME:$PASSWORD" > /etc/rsyncd.secrets
-chmod 0400 /etc/rsyncd.secrets
+# Add user
+groupadd --gid $GROUP_ID $USERNAME
+useradd --uid $USER_ID --gid $GROUP_ID --create-home $USERNAME
+echo "${USERNAME}:${PASSWORD}" | chpasswd
 
+# Write Rsync secrets
+echo "$RSYNC_USERNAME:$RSYNC_PASSWORD" > /etc/rsyncd.secrets
+chgrp $USERNAME /etc/rsyncd.secrets
+chmod 0440 /etc/rsyncd.secrets
+
+# Write Rsync config
 [ -f /etc/rsyncd.conf ] || cat <<EOF > /etc/rsyncd.conf
-uid = $USER_ID
-gid = $GROUP_ID
-use chroot = yes
 pid file = /var/run/rsyncd.pid
-log file = /dev/stdout
+log file = /logs/rsync
 
-[${MODULE_NAME}]
+[${RSYNC_MODULE_NAME}]
   hosts deny = *
-  hosts allow = $ALLOW
+  hosts allow = $HOSTS_ALLOW
   read only = false
-  path = /volume
-  auth users = $USERNAME
+  path = /data
+  auth users = $RSYNC_USERNAME
   secrets file = /etc/rsyncd.secrets
+  use chroot = false
 EOF
 
+# Symlink to config file to give the single-user Rsync daemon access to it
+ln -s /etc/rsyncd.conf /home/${USERNAME}/
+
+# Start SSH server
+[ -d /var/run/sshd ] || mkdir -p /var/run/sshd
+/usr/sbin/sshd &
+
+# Start Rsync daemon
 exec /usr/bin/rsync --no-detach --daemon --config /etc/rsyncd.conf "$@"
